@@ -3,13 +3,18 @@ const hashes = @import("hashes");
 
 fn benchmark(name: []const u8, iterations: usize, func: anytype, args: anytype) void {
     if (iterations == 0) return;
+
     const start = std.time.nanoTimestamp();
     for (0..iterations) |_| {
         @call(.always_inline, func, args);
     }
     const elapsed = std.time.nanoTimestamp() - start;
     const itps = @as(f128, @floatFromInt(iterations)) / (@as(f128, @floatFromInt(elapsed)) / std.time.ns_per_s);
-    std.io.getStdOut().writer().print("{s}: {:.2} it/s\n", .{ name, hashes.util.HumanInt(@intFromFloat(itps)) }) catch {};
+
+    var fmtbuf: [256]u8 = undefined;
+    const itpsfmt = std.fmt.bufPrint(&fmtbuf, "{:.3}", .{hashes.util.HumanInt(@intFromFloat(itps))}) catch "ERROR";
+
+    std.io.getStdOut().writer().print("{s}: {s: <8} h/s\n", .{ name, itpsfmt }) catch {};
 }
 
 fn stringLessThan(_: void, lhs: []const u8, rhs: []const u8) bool {
@@ -43,7 +48,7 @@ pub fn main() !u8 {
                 std.debug.print("Unsupported benchmark: {s}\n", .{name.?});
                 return 1;
             }
-            b.?.* = try std.fmt.parseInt(usize, iterations.?, 10);
+            b.?.* = try std.fmt.parseIntSizeSuffix(iterations.?, 10);
         }
     } else {
         std.debug.print("Usage: {s} [algorithm:iterations]...\n\n", .{args[0]});
