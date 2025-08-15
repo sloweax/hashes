@@ -1,5 +1,7 @@
 const std = @import("std");
 const hashes = @import("hashes");
+const haraka256 = hashes.haraka.haraka256;
+const haraka512 = hashes.haraka.haraka512;
 
 fn benchmark(name: []const u8, iterations: usize, func: anytype, args: anytype) void {
     if (iterations == 0) return;
@@ -74,8 +76,8 @@ pub fn main() !u8 {
     var buf: [1024]u8 = undefined;
     @memset(&buf, 0);
 
-    benchmark("haraka256", benchmarks.get("haraka256").?, hashes.Haraka.hash256, .{ buf[0..32].*, buf[0..32] });
-    benchmark("haraka512", benchmarks.get("haraka512").?, hashes.Haraka.hash512, .{ buf[0..64].*, buf[0..32] });
+    benchmark("haraka256", benchmarks.get("haraka256").?, haraka256, .{ buf[0..32].*, buf[0..32] });
+    benchmark("haraka512", benchmarks.get("haraka512").?, haraka512, .{ buf[0..64].*, buf[0..32] });
 
     std.mem.doNotOptimizeAway(buf[0]);
 

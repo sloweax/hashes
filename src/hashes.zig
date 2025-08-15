@@ -1,4 +1,4 @@
-pub const Haraka = @import("haraka.zig");
+pub const haraka = @import("haraka.zig");
 pub const util = @import("util.zig");
 
 test {

@@ -52,7 +52,7 @@ fn shuffle_high(v0: anytype, v1: anytype) @Vector(4, u32) {
     return @shuffle(u32, @as(@Vector(4, u32), @bitCast(v0)), @as(@Vector(4, u32), @bitCast(v1)), @Vector(4, i32){ 2, -3, 3, -4 });
 }
 
-pub fn hash256(src: [32]u8, dst: *[32]u8) void {
+pub fn haraka256(src: [32]u8, dst: *[32]u8) void {
     var s0 = aes.Block.fromBytes(src[0..16]);
     var s1 = aes.Block.fromBytes(src[16..]);
 
@@ -72,7 +72,7 @@ pub fn hash256(src: [32]u8, dst: *[32]u8) void {
     @memcpy(dst[16..], &s1.xorBytes(src[16..]));
 }
 
-pub fn hash512(src: [64]u8, dst: *[32]u8) void {
+pub fn haraka512(src: [64]u8, dst: *[32]u8) void {
     var s0 = aes.Block.fromBytes(src[0..16]);
     var s1 = aes.Block.fromBytes(src[16..32]);
     var s2 = aes.Block.fromBytes(src[32..48]);
@@ -105,18 +105,18 @@ pub fn hash512(src: [64]u8, dst: *[32]u8) void {
     @memcpy(dst[24..], s3.xorBytes(src[48..])[0..8]);
 }
 
-test hash256 {
+test haraka256 {
     var buf: [32]u8 = undefined;
     const input = "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f".*;
     const output = "\x80\x27\xcc\xb8\x79\x49\x77\x4b\x78\xd0\x54\x5f\xb7\x2b\xf7\x0c\x69\x5c\x2a\x09\x23\xcb\xd4\x7b\xba\x11\x59\xef\xbf\x2b\x2c\x1c".*;
-    hash256(input, &buf);
+    haraka256(input, &buf);
     try std.testing.expectEqual(output, buf);
 }
 
-test hash512 {
+test haraka512 {
     var buf: [32]u8 = undefined;
     const input = "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x20\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2a\x2b\x2c\x2d\x2e\x2f\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3a\x3b\x3c\x3d\x3e\x3f".*;
     const output = "\xbe\x7f\x72\x3b\x4e\x80\xa9\x98\x13\xb2\x92\x28\x7f\x30\x6f\x62\x5a\x6d\x57\x33\x1c\xae\x5f\x34\xdd\x92\x77\xb0\x94\x5b\xe2\xaa".*;
-    hash512(input, &buf);
+    haraka512(input, &buf);
     try std.testing.expectEqual(output, buf);
 }
