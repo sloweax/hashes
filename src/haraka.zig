@@ -1,47 +1,49 @@
 const std = @import("std");
+const hashes = @import("hashes.zig");
+const htb = hashes.util.mustHexToBytes;
 const aes = std.crypto.core.aes;
 
 pub const RC = [_]aes.Block{
-    aes.Block.fromBytes("\x9d\x7b\x81\x75\xf0\xfe\xc5\xb2\x0a\xc0\x20\xe6\x4c\x70\x84\x06"),
-    aes.Block.fromBytes("\x17\xf7\x08\x2f\xa4\x6b\x0f\x64\x6b\xa0\xf3\x88\xe1\xb4\x66\x8b"),
-    aes.Block.fromBytes("\x14\x91\x02\x9f\x60\x9d\x02\xcf\x98\x84\xf2\x53\x2d\xde\x02\x34"),
-    aes.Block.fromBytes("\x79\x4f\x5b\xfd\xaf\xbc\xf3\xbb\x08\x4f\x7b\x2e\xe6\xea\xd6\x0e"),
-    aes.Block.fromBytes("\x44\x70\x39\xbe\x1c\xcd\xee\x79\x8b\x44\x72\x48\xcb\xb0\xcf\xcb"),
-    aes.Block.fromBytes("\x7b\x05\x8a\x2b\xed\x35\x53\x8d\xb7\x32\x90\x6e\xee\xcd\xea\x7e"),
-    aes.Block.fromBytes("\x1b\xef\x4f\xda\x61\x27\x41\xe2\xd0\x7c\x2e\x5e\x43\x8f\xc2\x67"),
-    aes.Block.fromBytes("\x3b\x0b\xc7\x1f\xe2\xfd\x5f\x67\x07\xcc\xca\xaf\xb0\xd9\x24\x29"),
-    aes.Block.fromBytes("\xee\x65\xd4\xb9\xca\x8f\xdb\xec\xe9\x7f\x86\xe6\xf1\x63\x4d\xab"),
-    aes.Block.fromBytes("\x33\x7e\x03\xad\x4f\x40\x2a\x5b\x64\xcd\xb7\xd4\x84\xbf\x30\x1c"),
-    aes.Block.fromBytes("\x00\x98\xf6\x8d\x2e\x8b\x02\x69\xbf\x23\x17\x94\xb9\x0b\xcc\xb2"),
-    aes.Block.fromBytes("\x8a\x2d\x9d\x5c\xc8\x9e\xaa\x4a\x72\x55\x6f\xde\xa6\x78\x04\xfa"),
-    aes.Block.fromBytes("\xd4\x9f\x12\x29\x2e\x4f\xfa\x0e\x12\x2a\x77\x6b\x2b\x9f\xb4\xdf"),
-    aes.Block.fromBytes("\xee\x12\x6a\xbb\xae\x11\xd6\x32\x36\xa2\x49\xf4\x44\x03\xa1\x1e"),
-    aes.Block.fromBytes("\xa6\xec\xa8\x9c\xc9\x00\x96\x5f\x84\x00\x05\x4b\x88\x49\x04\xaf"),
-    aes.Block.fromBytes("\xec\x93\xe5\x27\xe3\xc7\xa2\x78\x4f\x9c\x19\x9d\xd8\x5e\x02\x21"),
-    aes.Block.fromBytes("\x73\x01\xd4\x82\xcd\x2e\x28\xb9\xb7\xc9\x59\xa7\xf8\xaa\x3a\xbf"),
-    aes.Block.fromBytes("\x6b\x7d\x30\x10\xd9\xef\xf2\x37\x17\xb0\x86\x61\x0d\x70\x60\x62"),
-    aes.Block.fromBytes("\xc6\x9a\xfc\xf6\x53\x91\xc2\x81\x43\x04\x30\x21\xc2\x45\xca\x5a"),
-    aes.Block.fromBytes("\x3a\x94\xd1\x36\xe8\x92\xaf\x2c\xbb\x68\x6b\x22\x3c\x97\x23\x92"),
-    aes.Block.fromBytes("\xb4\x71\x10\xe5\x58\xb9\xba\x6c\xeb\x86\x58\x22\x38\x92\xbf\xd3"),
-    aes.Block.fromBytes("\x8d\x12\xe1\x24\xdd\xfd\x3d\x93\x77\xc6\xf0\xae\xe5\x3c\x86\xdb"),
-    aes.Block.fromBytes("\xb1\x12\x22\xcb\xe3\x8d\xe4\x83\x9c\xa0\xeb\xff\x68\x62\x60\xbb"),
-    aes.Block.fromBytes("\x7d\xf7\x2b\xc7\x4e\x1a\xb9\x2d\x9c\xd1\xe4\xe2\xdc\xd3\x4b\x73"),
-    aes.Block.fromBytes("\x4e\x92\xb3\x2c\xc4\x15\x14\x4b\x43\x1b\x30\x61\xc3\x47\xbb\x43"),
-    aes.Block.fromBytes("\x99\x68\xeb\x16\xdd\x31\xb2\x03\xf6\xef\x07\xe7\xa8\x75\xa7\xdb"),
-    aes.Block.fromBytes("\x2c\x47\xca\x7e\x02\x23\x5e\x8e\x77\x59\x75\x3c\x4b\x61\xf3\x6d"),
-    aes.Block.fromBytes("\xf9\x17\x86\xb8\xb9\xe5\x1b\x6d\x77\x7d\xde\xd6\x17\x5a\xa7\xcd"),
-    aes.Block.fromBytes("\x5d\xee\x46\xa9\x9d\x06\x6c\x9d\xaa\xe9\xa8\x6b\xf0\x43\x6b\xec"),
-    aes.Block.fromBytes("\xc1\x27\xf3\x3b\x59\x11\x53\xa2\x2b\x33\x57\xf9\x50\x69\x1e\xcb"),
-    aes.Block.fromBytes("\xd9\xd0\x0e\x60\x53\x03\xed\xe4\x9c\x61\xda\x00\x75\x0c\xee\x2c"),
-    aes.Block.fromBytes("\x50\xa3\xa4\x63\xbc\xba\xbb\x80\xab\x0c\xe9\x96\xa1\xa5\xb1\xf0"),
-    aes.Block.fromBytes("\x39\xca\x8d\x93\x30\xde\x0d\xab\x88\x29\x96\x5e\x02\xb1\x3d\xae"),
-    aes.Block.fromBytes("\x42\xb4\x75\x2e\xa8\xf3\x14\x88\x0b\xa4\x54\xd5\x38\x8f\xbb\x17"),
-    aes.Block.fromBytes("\xf6\x16\x0a\x36\x79\xb7\xb6\xae\xd7\x7f\x42\x5f\x5b\x8a\xbb\x34"),
-    aes.Block.fromBytes("\xde\xaf\xba\xff\x18\x59\xce\x43\x38\x54\xe5\xcb\x41\x52\xf6\x26"),
-    aes.Block.fromBytes("\x78\xc9\x9e\x83\xf7\x9c\xca\xa2\x6a\x02\xf3\xb9\x54\x9a\xe9\x4c"),
-    aes.Block.fromBytes("\x35\x12\x90\x22\x28\x6e\xc0\x40\xbe\xf7\xdf\x1b\x1a\xa5\x51\xae"),
-    aes.Block.fromBytes("\xcf\x59\xa6\x48\x0f\xbc\x73\xc1\x2b\xd2\x7e\xba\x3c\x61\xc1\xa0"),
-    aes.Block.fromBytes("\xa1\x9d\xc5\xe9\xfd\xbd\xd6\x4a\x88\x82\x28\x02\x03\xcc\x6a\x75"),
+    aes.Block.fromBytes(&htb("9d7b8175f0fec5b20ac020e64c708406")),
+    aes.Block.fromBytes(&htb("17f7082fa46b0f646ba0f388e1b4668b")),
+    aes.Block.fromBytes(&htb("1491029f609d02cf9884f2532dde0234")),
+    aes.Block.fromBytes(&htb("794f5bfdafbcf3bb084f7b2ee6ead60e")),
+    aes.Block.fromBytes(&htb("447039be1ccdee798b447248cbb0cfcb")),
+    aes.Block.fromBytes(&htb("7b058a2bed35538db732906eeecdea7e")),
+    aes.Block.fromBytes(&htb("1bef4fda612741e2d07c2e5e438fc267")),
+    aes.Block.fromBytes(&htb("3b0bc71fe2fd5f6707cccaafb0d92429")),
+    aes.Block.fromBytes(&htb("ee65d4b9ca8fdbece97f86e6f1634dab")),
+    aes.Block.fromBytes(&htb("337e03ad4f402a5b64cdb7d484bf301c")),
+    aes.Block.fromBytes(&htb("0098f68d2e8b0269bf231794b90bccb2")),
+    aes.Block.fromBytes(&htb("8a2d9d5cc89eaa4a72556fdea67804fa")),
+    aes.Block.fromBytes(&htb("d49f12292e4ffa0e122a776b2b9fb4df")),
+    aes.Block.fromBytes(&htb("ee126abbae11d63236a249f44403a11e")),
+    aes.Block.fromBytes(&htb("a6eca89cc900965f8400054b884904af")),
+    aes.Block.fromBytes(&htb("ec93e527e3c7a2784f9c199dd85e0221")),
+    aes.Block.fromBytes(&htb("7301d482cd2e28b9b7c959a7f8aa3abf")),
+    aes.Block.fromBytes(&htb("6b7d3010d9eff23717b086610d706062")),
+    aes.Block.fromBytes(&htb("c69afcf65391c28143043021c245ca5a")),
+    aes.Block.fromBytes(&htb("3a94d136e892af2cbb686b223c972392")),
+    aes.Block.fromBytes(&htb("b47110e558b9ba6ceb8658223892bfd3")),
+    aes.Block.fromBytes(&htb("8d12e124ddfd3d9377c6f0aee53c86db")),
+    aes.Block.fromBytes(&htb("b11222cbe38de4839ca0ebff686260bb")),
+    aes.Block.fromBytes(&htb("7df72bc74e1ab92d9cd1e4e2dcd34b73")),
+    aes.Block.fromBytes(&htb("4e92b32cc415144b431b3061c347bb43")),
+    aes.Block.fromBytes(&htb("9968eb16dd31b203f6ef07e7a875a7db")),
+    aes.Block.fromBytes(&htb("2c47ca7e02235e8e7759753c4b61f36d")),
+    aes.Block.fromBytes(&htb("f91786b8b9e51b6d777dded6175aa7cd")),
+    aes.Block.fromBytes(&htb("5dee46a99d066c9daae9a86bf0436bec")),
+    aes.Block.fromBytes(&htb("c127f33b591153a22b3357f950691ecb")),
+    aes.Block.fromBytes(&htb("d9d00e605303ede49c61da00750cee2c")),
+    aes.Block.fromBytes(&htb("50a3a463bcbabb80ab0ce996a1a5b1f0")),
+    aes.Block.fromBytes(&htb("39ca8d9330de0dab8829965e02b13dae")),
+    aes.Block.fromBytes(&htb("42b4752ea8f314880ba454d5388fbb17")),
+    aes.Block.fromBytes(&htb("f6160a3679b7b6aed77f425f5b8abb34")),
+    aes.Block.fromBytes(&htb("deafbaff1859ce433854e5cb4152f626")),
+    aes.Block.fromBytes(&htb("78c99e83f79ccaa26a02f3b9549ae94c")),
+    aes.Block.fromBytes(&htb("35129022286ec040bef7df1b1aa551ae")),
+    aes.Block.fromBytes(&htb("cf59a6480fbc73c12bd27eba3c61c1a0")),
+    aes.Block.fromBytes(&htb("a19dc5e9fdbdd64a8882280203cc6a75")),
 };
 
 fn shuffle_low(v0: anytype, v1: anytype) @Vector(4, u32) {
@@ -107,16 +109,16 @@ pub fn haraka512(src: [64]u8, dst: *[32]u8) void {
 
 test haraka256 {
     var buf: [32]u8 = undefined;
-    const input = "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f".*;
-    const output = "\x80\x27\xcc\xb8\x79\x49\x77\x4b\x78\xd0\x54\x5f\xb7\x2b\xf7\x0c\x69\x5c\x2a\x09\x23\xcb\xd4\x7b\xba\x11\x59\xef\xbf\x2b\x2c\x1c".*;
+    const input = comptime htb("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f");
+    const output = comptime htb("8027ccb87949774b78d0545fb72bf70c695c2a0923cbd47bba1159efbf2b2c1c");
     haraka256(input, &buf);
     try std.testing.expectEqual(output, buf);
 }
 
 test haraka512 {
     var buf: [32]u8 = undefined;
-    const input = "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x20\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2a\x2b\x2c\x2d\x2e\x2f\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3a\x3b\x3c\x3d\x3e\x3f".*;
-    const output = "\xbe\x7f\x72\x3b\x4e\x80\xa9\x98\x13\xb2\x92\x28\x7f\x30\x6f\x62\x5a\x6d\x57\x33\x1c\xae\x5f\x34\xdd\x92\x77\xb0\x94\x5b\xe2\xaa".*;
+    const input = comptime htb("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f");
+    const output = comptime htb("be7f723b4e80a99813b292287f306f625a6d57331cae5f34dd9277b0945be2aa");
     haraka512(input, &buf);
     try std.testing.expectEqual(output, buf);
 }

@@ -33,3 +33,10 @@ fn formatHumanInt(value: u64, comptime fmt: []const u8, options: std.fmt.FormatO
 pub fn HumanInt(val: u64) std.fmt.Formatter(formatHumanInt) {
     return .{ .data = val };
 }
+
+pub fn mustHexToBytes(src: []const u8) [src.len / 2]u8 {
+    @setEvalBranchQuota(std.math.maxInt(u32));
+    var buf: [src.len / 2]u8 = undefined;
+    _ = std.fmt.hexToBytes(&buf, src) catch unreachable;
+    return buf;
+}
