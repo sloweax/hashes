@@ -109,16 +109,16 @@ pub fn haraka512(src: [64]u8, dst: *[32]u8) void {
 
 test haraka256 {
     var buf: [32]u8 = undefined;
-    const input = comptime htb("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f");
-    const output = comptime htb("8027ccb87949774b78d0545fb72bf70c695c2a0923cbd47bba1159efbf2b2c1c");
+    const input = htb("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f");
+    const output = htb("8027ccb87949774b78d0545fb72bf70c695c2a0923cbd47bba1159efbf2b2c1c");
     haraka256(input, &buf);
     try std.testing.expectEqual(output, buf);
 }
 
 test haraka512 {
     var buf: [32]u8 = undefined;
-    const input = comptime htb("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f");
-    const output = comptime htb("be7f723b4e80a99813b292287f306f625a6d57331cae5f34dd9277b0945be2aa");
+    const input = htb("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f");
+    const output = htb("be7f723b4e80a99813b292287f306f625a6d57331cae5f34dd9277b0945be2aa");
     haraka512(input, &buf);
     try std.testing.expectEqual(output, buf);
 }
