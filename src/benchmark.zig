@@ -67,7 +67,7 @@ pub fn main() !u8 {
             std.debug.print("{s}\n", .{name});
         }
 
-        std.debug.print("\nExample: {s} {s}:10000000\n\n", .{ args[0], algos.items[0] });
+        std.debug.print("\nExample: {s} {s}:100M\n\n", .{ args[0], algos.items[0] });
 
         return 1;
     }
