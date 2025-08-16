@@ -45,12 +45,11 @@ pub fn main() !u8 {
                 std.debug.print("Invalid benchmark: {s}\n", .{arg});
                 return 1;
             }
-            const b = benchmarks.getPtr(name.?);
-            if (b == null) {
+            const b = benchmarks.getPtr(name.?) orelse {
                 std.debug.print("Unsupported benchmark: {s}\n", .{name.?});
                 return 1;
-            }
-            b.?.* = try std.fmt.parseIntSizeSuffix(iterations.?, 10);
+            };
+            b.* = try std.fmt.parseIntSizeSuffix(iterations.?, 10);
         }
     } else {
         std.debug.print("Usage: {s} [algorithm:iterations]...\n\n", .{args[0]});
